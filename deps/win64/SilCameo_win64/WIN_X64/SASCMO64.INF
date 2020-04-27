@@ -1,0 +1,125 @@
+;
+; SASCMO64.INF for
+; Windows XP Professional x64 Edition / Windows Vista x64 Edition /
+; Windows 7 x64 Edition / Windows 8 x64 Edition
+;
+; List of supported printers, manufacturers
+;
+
+;
+; Version section.
+;
+[Version]
+Signature="$Windows NT$"
+Class=Printer
+ClassGUID={4D36E979-E325-11CE-BFC1-08002BE10318}
+Provider=%Silhouette%
+DriverVer=11/21/2012,1.20.0.0
+CatalogFile=SASCMO64.CAT
+
+;
+; Manufacturer section.
+;
+; This section lists all of the manufacturers
+; that we will display in the Dialog box
+;
+[Manufacturer]
+%Silhouette% = Mfg.Silhouette,NTamd64
+
+;
+; Model sections.
+;
+; Each section here corresponds with an entry listed in the
+; [Manufacturer] section, above. The models will be displayed in the order
+; that they appear in the INF file.
+;
+;
+; for 64-bit x64
+;
+[Mfg.Silhouette.NTamd64]
+"Silhouette CAMEO"     = CAMEO.GPD, USBPRINT\SilhouetteCAMEOBE49
+"Silhouette Portrait"  = PORTRAIT.GPD, USBPRINT\SilhouettePortraitA325
+
+[OEM URLS]
+%Silhouette% = "http://www.silhouetteamerica.com/"
+
+;
+; Installer Sections
+;
+; These sections control file installation, and reference all files that
+; need to be copied. The section name will be assumed to be the driver
+; file, unless there is an explicit DriverFile section listed.
+;
+[CAMEO.GPD]
+CopyFiles=@CAMEO.GPD,Silhouette,LANGUAGE_MONITOR
+DataSection=Silhouette_DATA
+DataFile=CAMEO.GPD
+
+[PORTRAIT.GPD]
+CopyFiles=@PORTRAIT.GPD,Silhouette,LANGUAGE_MONITOR
+DataSection=Silhouette_DATA
+DataFile=PORTRAIT.GPD
+
+;
+; Copy Sections
+;
+; Lists of files that are actually copied. These sections are referenced
+; from the installer sections, above. Only create a section if it contains
+; two or more files (if we only copy a single file, identify it in the
+; installer section, using the @filename notation) or if it's a color
+; profile (since the DestinationDirs can only handle sections, and not
+; individual files).
+;
+[Silhouette]
+SASCMO64.DLL
+SASCMOUI64.DLL
+SASCMOUI.CHM
+
+[LANGUAGE_MONITOR]
+SASCMON64.DLL
+;
+; Data Sections
+;
+; These sections contain data that is shared between devices.
+;
+[Silhouette_DATA]
+;NoTestPage=1
+DriverFile=SASCMO64.DLL
+ConfigFile=SASCMOUI64.DLL
+HelpFile=SASCMOUI.CHM
+DefaultDataType=RAW
+LanguageMonitor=%LANG_MONITOR%
+
+;
+; Call SetupSetDirectoryId with 66000 to set the target directory at runtime
+; (depending on which environment drivers are getting installed)
+;
+[DestinationDirs]
+DefaultDestDir=66000
+LANGUAGE_MONITOR=66002
+
+;
+; diskid = description,tagfile,unused,subdir
+;
+[SourceDisksNames.amd64]
+2="Silhouette Series Software CD",,
+
+;
+; filename_on_source = diskid,subdir,size,checksum,spare,spare
+; extra fields are nt-specific
+;   bootmediaord,targetdirectory,upgradedisposition,textmodedisposition,targetname
+;
+[SourceDisksFiles.amd64]
+CAMEO.GPD       = 2
+PORTRAIT.GPD    = 2
+SASCMO64.DLL    = 2
+SASCMOUI64.DLL  = 2
+SASCMOUI.CHM    = 2
+SASCMON64.DLL   = 2
+
+;
+; Localizable Strings
+;
+[Strings]
+Silhouette="Silhouette America"
+LANG_MONITOR="Silhouette Language Monitor,SASCMON64.DLL"

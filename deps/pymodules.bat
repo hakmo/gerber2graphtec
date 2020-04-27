@@ -1,0 +1,1 @@
+pip install libusb libusb1 numpy scipy svg_writer
