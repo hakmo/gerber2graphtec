@@ -1,15 +1,36 @@
 Tool for cutting accurate SMT stencils on a Graphtec cutter (e.g. Silhouette Cameo or Portrait) from gerber files.  Techniques include separately drawn line segments (no complex paths), antibacklash, drag-knife-angle "training", and multiple passes.  This produces stencils usable down to approximately 0.5 mm pitch (QFP/QFN) and 0201 discrete components, or perhaps even slightly better; but it is slower than normal cutting.
 
+**Ubuntu TLDR:**
+Standard edition:
+sudo apt install git build-essential python-dev python-setuptools python-pip python-smbus -y
+sudo apt install gerbv pstoedit python-tk -y
 
-Usage:
+Merge edition:
+sudo apt install python-numpy python-scipy python-svgwrite -y
+
+**Windows TLDR:**
+From the deps folder install ghostscript and pstoedit
+Gerbv will run without installation
+Get the necessary python modules using pymodules.bat
+Install Cameo drivers in Win7 compatibility mode, reboot Windows, and ensure the Cameo shows up in Devices and Printers as a printer. From the Sharing tab of the Printer Properties for the Cameo, share it and give it a name.
+
+**Note:** for some reason merge is failing under Windows with the error "ERROR: polygon is not closed. aborting" in the generated output file. Still working on figuring that out (probably an issue with one of the dependencies versions?)
+
+**Usage:**
 
 A solderpaste gerber file, paste.gbr, and default settings:
 
-  gerber2graphtec paste.gbr >/dev/usb/lp0
+  *gerber2graphtec paste.gbr >/dev/usb/lp0*
 
 A more elaborate command line with linear map (to correct spatial miscalibration) and multiple passes with different speeds and forces:
 
-  gerber2graphtec --offset 3,4 --matrix 1.001,0,-0.0005,0.9985 --speed 2,1 --force 5,25 paste.gbr >/dev/usb/lp0
+  *gerber2graphtec --offset 3,4 --matrix 1.001,0,-0.0005,0.9985 --speed 2,1 --force 5,25 paste.gbr >/dev/usb/lp0*
+  
+with merge:
+
+  *gerber2graphtec --offset 0.5,0.5 --matrix 1.001,0,-0.0005,0.9985 --speed 2,1 --force 8,30 --merge 1 paste.gbr >/dev/usb/lp0*
+  
+**Note:** the offset start from top right (0, 0)
 
 You may want to have your CAM tool shrink the paste features by about 2 mils before exporting to gerber.  The craft-cutter knife, when cutting thin mylar, seems to spread out the geometry by about this amount.  I'd suggest using mylar with thickness between about 3 and 5 mils; the IPC-recommended thicknesses for fine-pitch stencils are approximately in this range.  (Typical inexpensive laser-transparency sheets happen to be just right, being somewhere between 3.5 and 4.3 mils.)  You may have to experiment with the cutting speeds and forces for best quality with your materials.
 
