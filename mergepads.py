@@ -2,9 +2,10 @@
 import math
 import numpy as np
 from scipy.spatial import ConvexHull
+import svgwriter
 
 DEBUG = False
-DEBUG_SVG = True
+DEBUG_SVG = False
 
 def log(s):
     if DEBUG:
@@ -119,8 +120,7 @@ def min_stroke_distance(s1, s2):
 def polygon_area(corners):
     n = len(corners) # of corners
     if corners[0] != corners[n-1]:
-        print("ERROR: polygon is not closed. aborting")
-        exit(0)
+        raise Exception("Polygon is not closed. Aborting!")
 
     area = 0.0
     for i in range(n):
@@ -144,6 +144,10 @@ def fix_small_geometry(strokes, min_size, min_dist):
             # small rect, add to small list
             log("got small rect " + str(s))
             small_rects.append(s)
+
+    if (DEBUG_SVG):
+        svgwriter.svg_strokes("in.svg", [[strokes, 'green']])
+        svgwriter.svg_strokes("out.svg", [[processed_strokes, 'blue'], [small_rects, 'red']])
 
     # small rects list is now searched for rects that are close together
     log("trying to merge close rects")
@@ -203,14 +207,8 @@ def fix_small_geometry(strokes, min_size, min_dist):
         # make sure to close polygon
         smallrect_strokes.append(bbox + [bbox[0]])         
 
-    
     if (DEBUG_SVG):
-        import svgwriter
-        svg = svgwriter.svgwriter("_tmp_gerber.svg")
-        svg.draw_polygon(smallrect_strokes, 'blue')
-        svg.draw_polygon(processed_strokes, 'black')
-        svg.draw_polygon(small_rects, 'red')
-        svg.finish()
+        svgwriter.svg_strokes("_tmp_gerber.svg", [[smallrect_strokes, 'blue'], [processed_strokes, 'black'], [small_rects, 'red']])
 
     return smallrect_strokes + processed_strokes 
 

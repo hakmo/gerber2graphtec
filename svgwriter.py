@@ -2,6 +2,12 @@
 import svgwrite
 from svgwrite import cm, mm   
 
+def svg_strokes(filename, strokes):
+    svg = svgwriter(filename)
+    for stroke in strokes:
+        svg.draw_polygon(stroke[0], stroke[1])
+    svg.finish()
+
 class svgwriter:
     def __init__(self, filename):
         self.dwg = svgwrite.Drawing(filename, profile='tiny')
@@ -13,7 +19,7 @@ class svgwriter:
                 # create polygon list and convert user units to be in inch (*90)
                 points.append((p[0] * 90, p[1] * 90))
             
-            poly = self.dwg.polygon(points=points, fill='none', stroke=color, stroke_width="0.1mm")
+            poly = self.dwg.polygon(points=points, fill='none', stroke=color, stroke_width="0.01mm")
             self.dwg.add(poly)
 
     def finish(self):
