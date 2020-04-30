@@ -177,7 +177,7 @@ def main_program():
  #     if border[0]!=0 or border[1]!=0:    # Only draw border if non-zero
         g.closed_path(border_path)
 
-  svgwriter.svg_strokes("_tmp_gerber.svg", [[strokes, 'black']])
+  svgwriter.svg_strokes(os.path.normpath("%s\_tmp_gerber.svg" % (head)), [[strokes, 'black']])
 
   g.end()
 
