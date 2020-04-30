@@ -168,14 +168,14 @@ def main_program():
       for x in lines:
         g.line(*x)
 #      if border[0]!=0 or border[1]!=0:    # Only draw border if non-zero
-        g.closed_path(border_path)
+      g.closed_path(border_path)
   else:
     for (s,f) in zip(speed,force):
       g.set(speed=s, force=f)
       for s in strokes:
         g.closed_path(s)
  #     if border[0]!=0 or border[1]!=0:    # Only draw border if non-zero
-        g.closed_path(border_path)
+      g.closed_path(border_path)
 
   svgwriter.svg_strokes(os.path.normpath("%s\_tmp_gerber.svg" % (head)), [[strokes, 'black']])
 
