@@ -14,7 +14,7 @@ Gerbv will run without installation
 Get the necessary python modules using pymodules.bat
 Install Cameo drivers in Win7 compatibility mode, reboot Windows, and ensure the Cameo shows up in Devices and Printers as a printer. From the Sharing tab of the Printer Properties for the Cameo, share it and give it a name.
 
-**Note:** for some reason merge is failing under Windows with the error "ERROR: polygon is not closed. aborting" in the generated output file. Still working on figuring that out (probably an issue with one of the dependencies versions?)
+**Note:** This is currently terrible at handling round/rounded pads. They will cause merge to fail with an error about non-closed polygons. Anything that's not at a multiple of 45* will be bad; basically don't do them.  Planning on a fix when I get around to it.
 
 **Usage:**
 
